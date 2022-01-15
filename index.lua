@@ -1,4 +1,5 @@
 -- this function owns to roblox, so i made my own one.
+concat = table.concat
 function string:split(sep)
   local t = {}
   sep = sep or ' '
@@ -36,7 +37,6 @@ function num2Hex(num)
   return hex:upper()
 end
 function hex2Num(hex)
-  if type(hex) == 'number' then return end
   if #hex >1 then
     if hex:sub(1,1) == '0' then hex = hex:sub(2,2) end
   end
@@ -86,20 +86,21 @@ end
   and the second one is the key
 ]]
 function decryptXor(xor,key,isHex)
+local xor2 = {unpack(xor)}
   -- make sure to set the 3th argument as true if u sending it as hex, and this returns bytes/ascii.
-      if type(xor) == 'string' then xor = xor:split(' ') end
+      if type(xor2) == 'string' then xor2 = xor2:split(' ') end
       local j = 1
-      for i = 1, #xor do
-          xor[i] = bxor((isHex and hex2Num(xor[i]) or xor[i]), key:sub(j,j):byte())
+      for i = 1, #xor2 do
+          xor2[i] = bxor((isHex and hex2Num(xor2[i]) or xor[i]), key:sub(j,j):byte())
           j = j + 1
           if j > #key then
               j = 1
           end
       end
-      return xor
+      return xor2
 end
 
-function bytesToString (bytes)
+function bytes2Text(bytes)
     local result = ""
     for i = 1, #bytes do
         result = result .. string.char(bytes[i])
@@ -131,18 +132,18 @@ end
 -- here some examples.
 key = 'im a key'
 data = 'Hey, i was an encrypted text!'
-encrypted = encryptXor(key,data, true)
-decrypted = decryptXor(encrypted,key, true)
-print('Key:',key)
-print('Encrypted:',table.concat(encrypted,' '))
-print(('===================='):rep(2))
-print('Decrypted:', bytesToString(encrypted))
-print('\n')
-print('Decrypted with wrong key:',bytesToString(decryptXor(encrypted,'notkey',true)))
+encrypted = encryptXor(key,data, not false)
+decrypted = bytes2Text(decryptXor(encrypted, key, true))
+
+print('Key:', key)
+print('Encrypted:', concat(encrypted,' '))
+print('Decrypted:', decrypted)
+print(('='):rep(40))
+print('Decrypted with wrong key:',bytes2Text(decryptXor(encrypted, 'imnotkey', true)))
+
 
 
 --[[
   made by me (ramirez.#7396)
   if u wanna use this functions in ur code go ahead!, thats why i made them, soon bringing more!!
 ]]
-
