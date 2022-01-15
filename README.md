@@ -1,2 +1,3 @@
 # encryptionMethods
-encryption methods.
+
+here some encryption methods i constantly use and i made in lua...
