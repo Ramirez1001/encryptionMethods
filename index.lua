@@ -86,9 +86,9 @@ end
   and the second one is the key
 ]]
 function decryptXor(xor,key,isHex)
-local xor2 = {unpack(xor)}
   -- make sure to set the 3th argument as true if u sending it as hex, and this returns bytes/ascii.
-      if type(xor2) == 'string' then xor2 = xor2:split(' ') end
+  local xor2
+      if type(xor) == 'string' then xor2 = xor:split(' ') else xor2 = {unpack(xor)}  end
       local j = 1
       for i = 1, #xor2 do
           xor2[i] = bxor((isHex and hex2Num(xor2[i]) or xor[i]), key:sub(j,j):byte())
@@ -132,11 +132,13 @@ end
 -- here some examples.
 key = 'im a key'
 data = 'Hey, i was an encrypted text!'
-encrypted = encryptXor(key,data, not false)
+
+encrypted = encryptXor(key, data, true)
+-- encrypted = [[21 08 59 4D 00 02 45 0E 08 1E 00 00 4E 4B 00 17 0A 1F 59 11 54 0E 01 59 1D 08 58 15 01]]
 decrypted = bytes2Text(decryptXor(encrypted, key, true))
 
 print('Key:', key)
-print('Encrypted:', concat(encrypted,' '))
+print('Encrypted:', (not (type(encrypted) == 'string') and concat(encrypted,' ')) or encrypted)
 print('Decrypted:', decrypted)
 print(('='):rep(40))
 print('Decrypted with wrong key:',bytes2Text(decryptXor(encrypted, 'imnotkey', true)))
