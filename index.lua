@@ -145,7 +145,3 @@ print('Decrypted with wrong key:',bytes2Text(decryptXor(encrypted, 'imnotkey', t
 
 
 
---[[
-  made by me (ramirez.#7396)
-  if u wanna use this functions in ur code go ahead!, thats why i made them, soon bringing more!!
-]]
